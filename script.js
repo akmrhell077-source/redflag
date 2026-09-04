@@ -276,6 +276,29 @@ redButton.addEventListener("click", function () {
 
 
 // Démarrage
+const notificationButton = document.getElementById("notificationButton");
+const notificationMessage = document.getElementById("notificationMessage");
+
+if (notificationButton) {
+    notificationButton.addEventListener("click", async function () {
+
+        if (!("Notification" in window)) {
+            notificationMessage.textContent =
+                "Les notifications ne sont pas supportées.";
+            return;
+        }
+
+        const permission = await Notification.requestPermission();
+
+        if (permission === "granted") {
+            notificationMessage.textContent =
+                "Notifications activées ! 🔔";
+        } else {
+            notificationMessage.textContent =
+                "Notifications non autorisées.";
+        }
+    });
+}
 loadQuestion();
 if ("serviceWorker" in navigator && "Notification" in window) {
     navigator.serviceWorker.register("./sw.js")
