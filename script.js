@@ -519,36 +519,28 @@ async function sendAnswer(answer) {
         return;
     }
 
-    // La réponse est enregistrée.
-    // La notification automatique sera gérée
-    // par la fonction Edge Supabase.
-
+    // Appel de la fonction de notification
     try {
-        const registration = await navigator.serviceWorker.ready;
-        const subscription = await registration.pushManager.getSubscription();
-
-        if (subscription) {
-            const { data, error: pushError } =
-                console.log("🚀 APPEL SEND-PUSH");
+        console.log("🚀 APPEL SEND-PUSH");
         alert("SEND-PUSH ATTEINT");
-                await supabaseClient.functions.invoke("send-push", {
-                    body: {
-                        subscription: subscription.toJSON(),
-                        questionId: currentQuestionId
-                    }
-                });
 
-            if (pushError) {
-                console.error("Erreur send-push :", pushError);
-            } else {
-                console.log("send-push appelée :", data);
-            }
+        const { data, error: pushError } =
+            await supabaseClient.functions.invoke("send-push", {
+                body: {
+                    questionId: currentQuestionId,
+                    answer: answer
+                }
+            });
+
+        if (pushError) {
+            console.error("Erreur send-push :", pushError);
+        } else {
+            console.log("send-push appelée :", data);
         }
     } catch (pushError) {
         console.error("Erreur notification :", pushError);
     }
 
-    console.log("🚀 AVANT THANK PAGE");
     showPage(thankPage);
 
 }
