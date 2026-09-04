@@ -262,7 +262,7 @@ if (newQuestionButton) {
 // Clé publique VAPID.
 // La clé privée VAPID reste UNIQUEMENT dans Supabase Edge Functions.
 
-const publicVapidKey =
+const publicVapidKey = "BDo1wpgsRChNiKooyq2Wa8Ubnw5CIXoQeBjtsohUNEFhH7iugnxXWH1TASrddmlwQNhEBXyaGSD1G26XzgIlBYk";
     "BHOLoTHoNc76zHGJq2YjCHp3j4mcMvVKDSWBw8ecajwGEC7xe-sffa5OKbpJBQHQu_EcmOx25iU8gaLg8eMBVqs";
 
 
