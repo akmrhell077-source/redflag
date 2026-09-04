@@ -277,3 +277,16 @@ redButton.addEventListener("click", function () {
 
 // Démarrage
 loadQuestion();
+if ("serviceWorker" in navigator && "Notification" in window) {
+    navigator.serviceWorker.register("./sw.js")
+        .then(() => {
+            console.log("Service Worker RedFlag activé");
+
+            if (Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+        })
+        .catch(error => {
+            console.error("Erreur Service Worker :", error);
+        });
+}
