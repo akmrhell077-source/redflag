@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://ywkgihzhlokkwozxsphi.supabase.co";
+/const SUPABASE_URL = "https://ywkgihzhlokkwozxsphi.supabase.co";
 
 const SUPABASE_KEY = "sb_publishable_5og_eUGWU3fp5AEUoDoBuA_y4tZq2el";
 
@@ -268,12 +268,10 @@ async function sendAnswer(answer) {
         return;
     }
 
-
     greenButton.disabled = true;
     redButton.disabled = true;
 
     answerMessage.textContent = "Envoi...";
-
 
     const { error } = await supabaseClient
         .from("responses")
@@ -281,7 +279,6 @@ async function sendAnswer(answer) {
             question_id: currentQuestionId,
             answer: answer
         });
-
 
     if (error) {
 
@@ -296,12 +293,8 @@ async function sendAnswer(answer) {
         return;
     }
 
-
     showPage(thankPage);
-
 }
-
-
 // Bouton GREEN FLAG
 greenButton.addEventListener("click", function () {
 
