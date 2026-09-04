@@ -523,6 +523,29 @@ async function sendAnswer(answer) {
     // La notification automatique sera gérée
     // par la fonction Edge Supabase.
 
+    try {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+
+        if (subscription) {
+            const { data, error: pushError } =
+                await supabaseClient.functions.invoke("send-push", {
+                    body: {
+                        subscription: subscription.toJSON(),
+                        questionId: currentQuestionId
+                    }
+                });
+
+            if (pushError) {
+                console.error("Erreur send-push :", pushError);
+            } else {
+                console.log("send-push appelée :", data);
+            }
+        }
+    } catch (pushError) {
+        console.error("Erreur notification :", pushError);
+    }
+
     showPage(thankPage);
 
 }
