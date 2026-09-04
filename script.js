@@ -530,6 +530,7 @@ async function sendAnswer(answer) {
         if (subscription) {
             const { data, error: pushError } =
                 console.log("🚀 APPEL SEND-PUSH");
+        alert("SEND-PUSH ATTEINT");
                 await supabaseClient.functions.invoke("send-push", {
                     body: {
                         subscription: subscription.toJSON(),
