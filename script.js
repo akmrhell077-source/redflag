@@ -1,4 +1,4 @@
-/const SUPABASE_URL = "https://ywkgihzhlokkwozxsphi.supabase.co";
+const SUPABASE_URL = "https://ywkgihzhlokkwozxsphi.supabase.co";
 
 const SUPABASE_KEY = "sb_publishable_5og_eUGWU3fp5AEUoDoBuA_y4tZq2el";
 
@@ -76,24 +76,20 @@ questionInput.addEventListener("input", function () {
 });
 
 
-// Créer une question
+// Créer une questio
 generateButton.addEventListener("click", async function () {
 
     const question = questionInput.value.trim();
 
     if (question.length < 5) {
-
         errorMessage.textContent =
             "Écris une question d'au moins 5 caractères.";
-
         return;
     }
 
     errorMessage.textContent = "";
-
     generateButton.disabled = true;
     generateButton.textContent = "Création...";
-
 
     const { data, error } = await supabaseClient
         .from("questions")
@@ -103,80 +99,35 @@ generateButton.addEventListener("click", async function () {
         .select("id")
         .single();
 
+    if (error) {
+        console.error(error);
 
-    
-    console.error(error);
+        errorMessage.textContent =
+            "Une erreur est survenue. Réessaie.";
 
-    answerMessage.textContent =
-        "Une erreur est survenue. Réessaie.";
+        generateButton.disabled = false;
+        generateButton.textContent = "Créer mon lien 🔗";
 
-    greenButton.disabled = false;
-    redButton.disabled = false;
-
-    return;
-}
-
-showPage(thankPage)if (error) {
-
-    console.error(error);
-
-    answerMessage.textContent =
-        "Une erreur est survenue. Réessaie.";
-
-    greenButton.disabled = false;
-    redButton.disabled = false;
-
-    return;
-}
-
-// Envoyer la notification au créateur
-try {
-console.log("Tentative d'envoi de notification...");
-    const { error: notificationError } =
-        await supabaseClient.functions.invoke(
-            "send-notification",
-            {
-                body: {
-                    question_id: currentQuestionId,
-                    answer: answer
-                }
-            }
-        );
-console.log("Résultat notification :", notificationError);
-    if (notificationError) {
-        console.error(
-            "Erreur notification :",
-            notificationError
-        );
+        return;
     }
 
-} catch (error) {
+    currentQuestionId = data.id;
 
-    console.error(
-        "Erreur appel notification :",
-        error
-    );
-}
-
-showPage(thankPage);
-
-
-    // Créer le lien public
     const link =
         `${window.location.origin}${window.location.pathname}?id=${data.id}`;
 
-    showPage(sharePage);showPage(sharePage);currentQuestionId = data.id;
+    generatedLink.textContent = link;
 
-generatedLink.textContent = link;
-showPage(sharePage);
+    showPage(sharePage);
 
     generateButton.disabled = false;
-    generateButton.textContent =
-        "Créer mon lien 🔗";
-
+    generateButton.textContent = "Créer mon lien 🔗";
 });
+ // Créer le lien public
+    const link =
+        `${window.location.origin}${window.location.pathname}?id=${data.id}`;
 
-
+    showPage(sharePage);showPage(sharePage);currentQuestion
 // Copier le lien
 copyButton.addEventListener("click", async function () {
 
@@ -406,7 +357,6 @@ if (notificationButton) {
     });
 
 }
-const notificationMessage = document.getElementById("notificationMessage");
 
 if (notificationButton) {
     notificationButton.addEventListener("click", async function () {
