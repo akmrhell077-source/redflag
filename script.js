@@ -104,28 +104,71 @@ generateButton.addEventListener("click", async function () {
         .single();
 
 
-    if (error) {
+    
+    console.error(error);
 
-        console.error(error);
+    answerMessage.textContent =
+        "Une erreur est survenue. Réessaie.";
 
-        errorMessage.textContent =
-            "Une erreur est survenue. Réessaie.";
+    greenButton.disabled = false;
+    redButton.disabled = false;
 
-        generateButton.disabled = false;
-        generateButton.textContent =
-            "Créer mon lien 🔗";
+    return;
+}
 
-        return;
+showPage(thankPage)if (error) {
+
+    console.error(error);
+
+    answerMessage.textContent =
+        "Une erreur est survenue. Réessaie.";
+
+    greenButton.disabled = false;
+    redButton.disabled = false;
+
+    return;
+}
+
+// Envoyer la notification au créateur
+try {
+console.log("Tentative d'envoi de notification...");
+    const { error: notificationError } =
+        await supabaseClient.functions.invoke(
+            "send-notification",
+            {
+                body: {
+                    question_id: currentQuestionId,
+                    answer: answer
+                }
+            }
+        );
+console.log("Résultat notification :", notificationError);
+    if (notificationError) {
+        console.error(
+            "Erreur notification :",
+            notificationError
+        );
     }
+
+} catch (error) {
+
+    console.error(
+        "Erreur appel notification :",
+        error
+    );
+}
+
+showPage(thankPage);
 
 
     // Créer le lien public
     const link =
         `${window.location.origin}${window.location.pathname}?id=${data.id}`;
 
-    generatedLink.textContent = link;
+    showPage(sharePage);showPage(sharePage);currentQuestionId = data.id;
 
-    showPage(sharePage);
+generatedLink.textContent = link;
+showPage(sharePage);
 
     generateButton.disabled = false;
     generateButton.textContent =
@@ -277,6 +320,99 @@ redButton.addEventListener("click", function () {
 
 // Démarrage
 const notificationButton = document.getElementById("notificationButton");
+const notificationMessage = document.getElementById("notificationMessage");
+
+const publicVapidKey = "BLyu5oYUyLNsmHM_cmktDpDnjTGK6B1RuKpU_xboYh6NE_VGflb8AwvOJezJMrHhrEiAWXZmJOiez-ZGlqiSYlg";
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = "=".repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+
+    const rawData = window.atob(base64);
+
+    return Uint8Array.from(
+        [...rawData].map(char => char.charCodeAt(0))
+    );
+}
+
+if (notificationButton) {
+
+    notificationButton.addEventListener("click", async function () {
+
+        if (!("Notification" in window)) {
+            notificationMessage.textContent =
+                "Les notifications ne sont pas supportées.";
+            return;
+        }
+
+        if (!currentQuestionId) {
+            notificationMessage.textContent =
+                "Crée d'abord une question.";
+            return;
+        }
+
+        const permission = await Notification.requestPermission();
+
+        if (permission !== "granted") {
+            notificationMessage.textContent =
+                "Notifications non autorisées.";
+            return;
+        }
+
+        try {
+
+            const registration =
+                await navigator.serviceWorker.ready;
+
+            let subscription =
+                await registration.pushManager.getSubscription();
+
+            if (!subscription) {
+
+                subscription =
+                    await registration.pushManager.subscribe({
+
+                        userVisibleOnly: true,
+
+                        applicationServerKey:
+                            urlBase64ToUint8Array(publicVapidKey)
+
+                    });
+            }
+
+            const { error } = await supabaseClient
+                .from("push_subscriptions")
+                .insert({
+                    question_id: currentQuestionId,
+                    subscription: subscription.toJSON()
+                });
+
+            if (error) {
+                console.error(error);
+
+                notificationMessage.textContent =
+                    "Impossible d'activer les notifications.";
+                return;
+            }
+
+            notificationMessage.textContent =
+                "Notifications activées ! 🔔";
+
+            console.log("Abonnement enregistré :", subscription);
+
+        } catch (error) {
+
+            console.error(error);
+
+            notificationMessage.textContent =
+                "Une erreur est survenue.";
+        }
+
+    });
+
+}
 const notificationMessage = document.getElementById("notificationMessage");
 
 if (notificationButton) {
