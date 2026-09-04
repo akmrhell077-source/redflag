@@ -547,6 +547,7 @@ async function sendAnswer(answer) {
         console.error("Erreur notification :", pushError);
     }
 
+    console.log("🚀 AVANT THANK PAGE");
     showPage(thankPage);
 
 }
