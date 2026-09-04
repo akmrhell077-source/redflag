@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://ywkgihzhlokkwozxsphi.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_8VF25OTarAE1k2g7fmZGig_oSqGsSSK";
+const SUPABASE_KEY = "sb_publishable_5og_eUGWU3fp5AEUoDoBuA_y4tZq2el";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -12,6 +12,8 @@ const supabaseClient = window.supabase.createClient(
 const homePage = document.getElementById("homePage");
 const createPage = document.getElementById("createPage");
 const sharePage = document.getElementById("sharePage");
+const answerPage = document.getElementById("answerPage");
+const thankPage = document.getElementById("thankPage");
 
 
 // Boutons
@@ -19,42 +21,49 @@ const createButton = document.getElementById("createButton");
 const backButton = document.getElementById("backButton");
 const generateButton = document.getElementById("generateButton");
 const copyButton = document.getElementById("copyButton");
-const newQuestionButton =
-    document.getElementById("newQuestionButton");
+const newQuestionButton = document.getElementById("newQuestionButton");
+
+const greenButton = document.getElementById("greenButton");
+const redButton = document.getElementById("redButton");
 
 
 // Champs
-const questionInput =
-    document.getElementById("questionInput");
+const questionInput = document.getElementById("questionInput");
+const charCount = document.getElementById("charCount");
+const generatedLink = document.getElementById("generatedLink");
+const errorMessage = document.getElementById("errorMessage");
+const copyMessage = document.getElementById("copyMessage");
 
-const charCount =
-    document.getElementById("charCount");
-
-const generatedLink =
-    document.getElementById("generatedLink");
-
-const errorMessage =
-    document.getElementById("errorMessage");
-
-const copyMessage =
-    document.getElementById("copyMessage");
+const questionText = document.getElementById("questionText");
+const answerMessage = document.getElementById("answerMessage");
 
 
-// Aller vers la création
-createButton.addEventListener("click", function () {
+// ID de la question actuelle
+let currentQuestionId = null;
+
+
+// Afficher une seule page
+function showPage(page) {
 
     homePage.classList.add("hidden");
-    createPage.classList.remove("hidden");
+    createPage.classList.add("hidden");
+    sharePage.classList.add("hidden");
+    answerPage.classList.add("hidden");
+    thankPage.classList.add("hidden");
 
+    page.classList.remove("hidden");
+}
+
+
+// Accueil → création
+createButton.addEventListener("click", function () {
+    showPage(createPage);
 });
 
 
 // Retour
 backButton.addEventListener("click", function () {
-
-    createPage.classList.add("hidden");
-    homePage.classList.remove("hidden");
-
+    showPage(homePage);
 });
 
 
@@ -67,7 +76,7 @@ questionInput.addEventListener("input", function () {
 });
 
 
-// Créer la question
+// Créer une question
 generateButton.addEventListener("click", async function () {
 
     const question = questionInput.value.trim();
@@ -86,7 +95,6 @@ generateButton.addEventListener("click", async function () {
     generateButton.textContent = "Création...";
 
 
-    // Enregistrer la question dans Supabase
     const { data, error } = await supabaseClient
         .from("questions")
         .insert({
@@ -111,17 +119,13 @@ generateButton.addEventListener("click", async function () {
     }
 
 
-    // Créer le vrai lien
+    // Créer le lien public
     const link =
         `${window.location.origin}${window.location.pathname}?id=${data.id}`;
 
     generatedLink.textContent = link;
 
-
-    // Afficher la page de partage
-    createPage.classList.add("hidden");
-    sharePage.classList.remove("hidden");
-
+    showPage(sharePage);
 
     generateButton.disabled = false;
     generateButton.textContent =
@@ -156,10 +160,120 @@ copyButton.addEventListener("click", async function () {
 newQuestionButton.addEventListener("click", function () {
 
     questionInput.value = "";
+
     charCount.textContent = "0 / 250";
+
     copyMessage.textContent = "";
 
-    sharePage.classList.add("hidden");
-    createPage.classList.remove("hidden");
+    showPage(createPage);
 
 });
+
+
+// Charger une question depuis le lien
+async function loadQuestion() {
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const id = params.get("id");
+
+
+    // Aucun ID = page d'accueil
+    if (!id) {
+        return;
+    }
+
+
+    currentQuestionId = id;
+
+
+    const { data, error } = await supabaseClient
+        .from("questions")
+        .select("question")
+        .eq("id", id)
+        .single();
+
+
+    if (error) {
+
+        console.error(error);
+
+        questionText.textContent =
+            "Cette question n'existe pas ou n'est plus disponible.";
+
+        showPage(answerPage);
+
+        greenButton.disabled = true;
+        redButton.disabled = true;
+
+        return;
+    }
+
+
+    questionText.textContent = data.question;
+
+    showPage(answerPage);
+
+}
+
+
+// Envoyer une réponse
+async function sendAnswer(answer) {
+
+    if (!currentQuestionId) {
+        return;
+    }
+
+
+    greenButton.disabled = true;
+    redButton.disabled = true;
+
+    answerMessage.textContent = "Envoi...";
+
+
+    const { error } = await supabaseClient
+        .from("responses")
+        .insert({
+            question_id: currentQuestionId,
+            answer: answer
+        });
+
+
+    if (error) {
+
+        console.error(error);
+
+        answerMessage.textContent =
+            "Une erreur est survenue. Réessaie.";
+
+        greenButton.disabled = false;
+        redButton.disabled = false;
+
+        return;
+    }
+
+
+    showPage(thankPage);
+
+}
+
+
+// Bouton GREEN FLAG
+greenButton.addEventListener("click", function () {
+
+    sendAnswer("GREEN");
+
+});
+
+
+// Bouton RED FLAG
+redButton.addEventListener("click", function () {
+
+    sendAnswer("RED");
+
+});
+
+
+// Démarrage
+loadQuestion();

@@ -14,6 +14,7 @@
 
     <main class="container">
 
+        <!-- ACCUEIL -->
         <section id="homePage" class="page">
             <div class="logo">🚩</div>
 
@@ -30,6 +31,7 @@
         </section>
 
 
+        <!-- CRÉATION -->
         <section id="createPage" class="page hidden">
 
             <button id="backButton" class="back-button">
@@ -59,6 +61,7 @@
         </section>
 
 
+        <!-- PARTAGE -->
         <section id="sharePage" class="page hidden">
 
             <div class="success-icon">🔥</div>
@@ -85,9 +88,52 @@
 
         </section>
 
+
+        <!-- PAGE DE RÉPONSE -->
+        <section id="answerPage" class="page hidden">
+
+            <div class="logo">🚩</div>
+
+            <h2>Alors...</h2>
+
+            <div class="question-card">
+                <p id="questionText"></p>
+            </div>
+
+            <div class="answer-buttons">
+
+                <button id="greenButton" class="answer-button green">
+                    🟢 GREEN FLAG
+                </button>
+
+                <button id="redButton" class="answer-button red">
+                    🔴 RED FLAG
+                </button>
+
+            </div>
+
+            <p id="answerMessage" class="success-message"></p>
+
+        </section>
+
+
+        <!-- MERCI -->
+        <section id="thankPage" class="page hidden">
+
+            <div class="success-icon">✅</div>
+
+            <h2>Réponse envoyée !</h2>
+
+            <p class="description">
+                Merci d'avoir donné ton avis.
+            </p>
+
+        </section>
+
     </main>
 
-    <!-- Bibliothèque Supabase -->
+
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Notre JavaScript -->

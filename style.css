@@ -72,16 +72,10 @@ h2 {
     font-weight: bold;
 
     cursor: pointer;
-
-    transition: transform 0.2s, opacity 0.2s;
 }
 
-.main-button:active {
-    transform: scale(0.97);
-}
-
-.main-button:hover {
-    opacity: 0.9;
+.main-button:disabled {
+    opacity: 0.5;
 }
 
 .secondary-button {
@@ -178,7 +172,74 @@ textarea:focus {
     min-height: 20px;
 }
 
+
+/* Carte de la question */
+
+.question-card {
+    background: #1b1b1b;
+
+    border: 1px solid #333;
+
+    border-radius: 18px;
+
+    padding: 25px 20px;
+
+    margin: 25px 0;
+}
+
+.question-card p {
+    font-size: 22px;
+    line-height: 1.5;
+}
+
+
+/* Boutons Green / Red */
+
+.answer-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.answer-button {
+    width: 100%;
+
+    padding: 20px;
+
+    border: none;
+    border-radius: 15px;
+
+    color: white;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: transform 0.15s, opacity 0.15s;
+}
+
+.answer-button:active {
+    transform: scale(0.97);
+}
+
+.answer-button:disabled {
+    opacity: 0.5;
+}
+
+.answer-button.green {
+    background: #16a34a;
+}
+
+.answer-button.red {
+    background: #dc2626;
+}
+
+
+/* Animation */
+
 @keyframes fadeIn {
+
     from {
         opacity: 0;
         transform: translateY(10px);
@@ -188,4 +249,5 @@ textarea:focus {
         opacity: 1;
         transform: translateY(0);
     }
+
 }
