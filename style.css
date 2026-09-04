@@ -1,0 +1,191 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: white;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.page {
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.hidden {
+    display: none;
+}
+
+.logo {
+    font-size: 70px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    color: #bdbdbd;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+.description {
+    color: #aaa;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.main-button {
+    width: 100%;
+    padding: 17px;
+    border: none;
+    border-radius: 14px;
+
+    background: #ff1744;
+    color: white;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.main-button:active {
+    transform: scale(0.97);
+}
+
+.main-button:hover {
+    opacity: 0.9;
+}
+
+.secondary-button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 12px;
+
+    border: 1px solid #333;
+    border-radius: 14px;
+
+    background: transparent;
+    color: white;
+
+    font-size: 16px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #aaa;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    margin-bottom: 30px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+
+    padding: 16px;
+
+    background: #1b1b1b;
+    color: white;
+
+    border: 1px solid #333;
+    border-radius: 14px;
+
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+
+    resize: none;
+    outline: none;
+
+    margin-bottom: 8px;
+}
+
+textarea:focus {
+    border-color: #ff1744;
+}
+
+.char-count {
+    text-align: right;
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: #ff5252;
+    margin-top: 15px;
+    min-height: 20px;
+}
+
+.success-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.link-box {
+    background: #1b1b1b;
+    border: 1px solid #333;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    margin-bottom: 15px;
+
+    overflow: hidden;
+}
+
+.link-box span {
+    color: #ff5370;
+    font-size: 14px;
+    word-break: break-all;
+}
+
+.success-message {
+    color: #4caf50;
+    margin-top: 15px;
+    min-height: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

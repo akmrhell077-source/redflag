@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RedFlag</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <section id="homePage" class="page">
+            <div class="logo">🚩</div>
+
+            <h1>RedFlag</h1>
+
+            <p class="subtitle">
+                Pose une question.<br>
+                Laisse les autres décider.
+            </p>
+
+            <button id="createButton" class="main-button">
+                Créer une question
+            </button>
+        </section>
+
+
+        <section id="createPage" class="page hidden">
+
+            <button id="backButton" class="back-button">
+                ← Retour
+            </button>
+
+            <h2>Ta question</h2>
+
+            <p class="description">
+                Écris une situation et laisse la personne choisir.
+            </p>
+
+            <textarea
+                id="questionInput"
+                placeholder="Ex : Parler tous les jours avec son ex, c'est..."
+                maxlength="250"
+            ></textarea>
+
+            <p id="charCount" class="char-count">0 / 250</p>
+
+            <button id="generateButton" class="main-button">
+                Créer mon lien 🔗
+            </button>
+
+            <p id="errorMessage" class="error"></p>
+
+        </section>
+
+
+        <section id="sharePage" class="page hidden">
+
+            <div class="success-icon">🔥</div>
+
+            <h2>Ton lien est prêt !</h2>
+
+            <p class="description">
+                Envoie ce lien à la personne de ton choix.
+            </p>
+
+            <div class="link-box">
+                <span id="generatedLink"></span>
+            </div>
+
+            <button id="copyButton" class="main-button">
+                Copier le lien 📋
+            </button>
+
+            <button id="newQuestionButton" class="secondary-button">
+                Nouvelle question
+            </button>
+
+            <p id="copyMessage" class="success-message"></p>
+
+        </section>
+
+    </main>
+
+    <!-- Bibliothèque Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Notre JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
