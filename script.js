@@ -177,7 +177,7 @@ async function loadQuestion() {
         new URLSearchParams(window.location.search);
 
     const id = params.get("id");
-
+console.log("ID reçu :", id);
 
     // Aucun ID = page d'accueil
     if (!id) {
